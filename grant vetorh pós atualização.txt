@@ -3,7 +3,11 @@ grant SELECT on VETORH.USU_VEXTENDECA to ENDECA;
 grant SELECT on VETORH.USU_VKPITI to ENDECA;    
 grant SELECT on VETORH.USU_VGERDIR to SOFTEXPERT;                                                                                                                                                                                                                
 grant SELECT on VETORH.USU_VESTORG to SOFTEXPERT;                                                                                                                                                                                                                
-grant SELECT on VETORH.USU_VDIREST to SOFTEXPERT;                                                                                                                                                                                                                    
+grant SELECT on VETORH.USU_VDIREST to SOFTEXPERT; 
+
+grant select on r018ccu to softexpert;
+grant select on USU_VCCUIDM to idmacesso;
+
  
 
 
