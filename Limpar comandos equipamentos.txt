@@ -1,0 +1,2 @@
+Delete r070onl where staexe in (0,2,3,4,5);
+Delete R070adm where stacmd in (3,4,7,8,9);

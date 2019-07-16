@@ -1,0 +1,9 @@
+Fat FMB Invoice - http://fmbhml.saesa.net/api/IntegracaoWSDL/POST/invoiceUpdate
+Fat FMB Login - http://fmbhml.saesa.net/api/TokenizeLogin/POST/Login
+Fat Password - Dc!dehml2015#
+Fat Username - svcacc.fmbhml
+FMB Companies - http://fmbhml.saesa.net/api/Companies/ADD/syncERP/input:xml/output:xml
+FMB Login - http://fmbhml.saesa.net/api/Login/GET/input:xml/output:xml
+Content type - application/xml
+PassWord - Dc!dehml2015#
+Username - svcacc.fmbhml

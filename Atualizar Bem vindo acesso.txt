@@ -1,0 +1,41 @@
+INSERT
+INTO R070MSC
+  (
+    NUMEMP,
+    TIPCOL,
+    NUMCAD,
+    DATINI,
+    HORINI,
+    DATFIM,
+    HORFIM,
+    QTDMSG,
+    MSGACC,
+    STAACC,
+    CODUSU
+  )
+SELECT fun.numemp,
+  fun.tipcol,
+  fun.numcad,
+  to_date(sysdate,'DD/MM/YYYY'),
+  0,
+  to_date('31/12/1900','DD/MM/YYYY'),
+  0,0,
+  CASE
+    WHEN fun.tipsex='M'
+    THEN 'Bem vindo '
+    ELSE 'Bem vinda '
+  END
+  ||initcap(SUBSTR(fun.nomfun,1,INSTR(fun.nomfun,' ')-1))
+  ||'!',
+  1,1
+FROM vetorh.r034fun fun
+WHERE fun.numemp=1
+AND fun.tipcol  =1
+AND fun.sitafa <>7
+AND NOT EXISTS
+  (SELECT 1
+  FROM VETORH.R070MSC msc
+  WHERE msc.numemp=fun.numemp
+  AND msc.tipcol  =fun.tipcol
+  AND msc.numcad  =fun.numcad
+  )

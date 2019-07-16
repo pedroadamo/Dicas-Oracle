@@ -1,0 +1,9 @@
+select  * from RA_INTERFACE_LINES_ALL where gl_date=to_date('13/04/2018','DD/MM/YYYY')
+
+select * from ra_interface_errors_all where interface_line_id in (1661196
+,1661197,
+1661198)
+
+
+select * from SAE_AR_FMB_INVOICES_ALL 
+

@@ -1,0 +1,83 @@
+Select ORIGEM
+     , ID_ENDERECO
+     , CODIGO_ENDERECO
+     , NOME
+     , CPF_CNPJ
+     , IE
+     , IMUNICIPAL
+     , ENDERECO
+     , NUMERO
+     , COMPLEMENTO
+     , BAIRRO
+     , CIDADE
+     , ESTADO
+     , CEP
+     , INTEGRA_FMB
+  From (SELECT 'CLIENTE'                ORIGEM
+             , hcas.party_site_id       ID_ENDERECO
+             , hps.party_site_name      CODIGO_ENDERECO
+             , hp.party_name NOME
+             , decode(hcas.global_attribute2
+                     ,'1'
+                     ,hcas.global_attribute3 || '-' || hcas.global_attribute5
+                     ,'2'
+                     ,hcas.global_attribute3||'/'||hcas.global_attribute4||'-'||hcas.global_attribute5
+                     ,hcas.global_attribute3||hcas.global_attribute4||hcas.global_attribute5) CPF_CNPJ
+             , hcas.global_attribute6    IE
+             , hcas.global_attribute7    IMUNICIPAL
+             , hl.address1               ENDERECO
+             , hl.address2               NUMERO
+             , hl.address3               COMPLEMENTO
+             , hl.address4               BAIRRO
+             , hl.city                   CIDADE
+             , hl.state                  ESTADO
+             , hl.postal_code            CEP
+             , hp.attribute1             INTEGRA_FMB
+          FROM apps.hz_parties             hp
+             , apps.hz_party_sites         hps
+             , apps.hz_cust_acct_sites_all hcas
+             , apps.hz_locations           hl
+             , apps.hz_cust_accounts       hz
+         WHERE hps.party_id = hp.party_id
+           And hcas.party_site_id = hps.party_site_id
+           And hps.location_id = hps.location_id 
+           And hl.location_id = hps.location_id
+           AND hcas.cust_account_id = hz.cust_account_id
+           And hz.party_id = hp.party_id
+        Union
+        Select 'FORNECEDOR'             ORIGEM
+             , asups.vendor_site_id     ID_ENDERECO
+             , asups.vendor_site_code   CODIGO_ENDERECO
+             , asup.vendor_name         NOME
+             , decode(asups.global_attribute9
+                     ,'1'
+                     ,asups.global_attribute10||'-'||asups.global_attribute11||asups.global_attribute12
+                     ,'2'
+                     ,asups.global_attribute10||'/'||asups.global_attribute11||'-'||asups.global_attribute12
+                     ,asups.global_attribute10||asups.global_attribute11||asups.global_attribute12) CPF_CNPJ
+             , asups.global_attribute13 IE
+             , asups.global_attribute14 IMUNICIPAL
+             , asups.address_line1      ENDERECO
+             , asups.address_line2      NUMERO
+             , asups.address_line3      COMPLEMENTO
+             , asups.address_line4      BAIRRO
+             , asups.city               CIDADE
+             , asups.state              ESTADO
+             , asups.zip                CEP
+             , asup.attribute1          INTEGRA_FMB
+          From ap.ap_suppliers asup
+             , ap.ap_supplier_sites_all asups
+         Where asups.vendor_id = asup.vendor_id ) INTFMB
+  Where 
+--    And ID_ENDERECO = 14022
+ --NOME Like '%CPFL%'
+ CPF_CNPJ in ('60855608/0001-20',
+'061116265/0001-44',
+'005965546/0001-09',
+'005965546/0001-09',
+'060942281/0001-23',
+'061116265/0003-06',
+'005914650/0001-66',
+'042150391/0010-61',
+'052503802/0001-18',
+'060942281/0001-23')

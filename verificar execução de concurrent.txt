@@ -1,0 +1,38 @@
+--verifica Execuções de Concurrents
+SELECT fcr.phase_code  -- P-pendente, C-concluido
+     , fcr.status_code -- C-conclusão normal, E-Erro
+     , fcr.completion_text
+     , decode(fcpv.user_concurrent_program_name,'Report Set', 
+              fcr.description, fcpv.user_concurrent_program_name) PROGRAM_NAME
+     , frv.responsibility_name
+     , fcrc.request_class_name RUNNING_UNDER
+     --, fcr.logfile_node_name NODE_NAME, fcr.os_process_id, fcr.single_thread_flag
+     , fcr.requested_start_date
+     , fcr.actual_start_date
+     , fcr.actual_Completion_date
+     , fcr.argument_text
+     , fu.user_name
+     , fcr.request_id
+     , fcr.parent_request_id
+  FROM apps.fnd_concurrent_requests      FCR
+     , apps.fnd_concurrent_programs_vl   FCPV
+     , apps.FND_USER                     FU
+     , apps.fnd_responsibility_vl        FRV
+     , apps.fnd_concurrent_request_class FCRC
+ WHERE fcr.concurrent_program_id = fcpv.concurrent_program_id
+   AND fu.user_id                = fcr.requested_by
+   AND frv.responsibility_id     = fcr.responsibility_id
+   AND fcrc.application_id(+)    = fcpv.CLASS_APPLICATION_ID
+   AND fcrc.request_class_id(+)  = fcpv.CONCURRENT_CLASS_ID
+--AND STATUS_CODE in ('C', 'I')
+--AND FU.USER_NAME = 'BERNAIM'
+--AND fcpv.user_concurrent_program_name in ('Interface Trip Stop - SRS','XXFND: Attachment Staging Table Data Validation')
+AND fcpv.user_concurrent_program_name like '%FMB%' --'NAPM Relieve Resource Usage Hours'
+--AND fcpv.user_concurrent_program_name like 'XXONT - Exporta Pedidos Retidos para Sistemas Legados%' --'NAPM Relieve Resource Usage Hours'
+--AND fcr.request_id                in (60122871,60122891,60122917)
+and fcr.requested_start_date      >= TO_DATE('13-10-2009 00:00','DD-MM-YYYY HH24:MI')
+--and fcr.requested_start_date       <= TO_DATE('08-10-2009 23:00','DD-MM-YYYY HH24:MI')
+--AND fcr.request_date              >= TO_DATE('21-09-2009 00:00','DD-MM-YYYY HH24:MI')
+--AND fcr.request_date              <= TO_DATE('21-09-2009 23:00','DD-MM-YYYY HH24:MI')
+--AND frv.responsibility_name       = 'LBIL_OM_SUPERUSER'
+ORDER BY fcr.request_date desc

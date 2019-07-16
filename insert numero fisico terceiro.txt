@@ -1,0 +1,31 @@
+INSERT
+INTO R069FIS
+  (
+    NUMCRA,
+    TECCRA,
+    DATALT,
+    HORINI,
+    DATFIM,
+    HORFIM,
+    NUMFIS,
+    CODUSU
+  )
+  (SELECT fun.numcra,
+      3,
+      fun.datadm,
+      1,
+      to_date('31/12/1900','DD/MM/YYYY'),
+      0,
+      TO_CHAR(fun.tipcol)
+      ||TO_CHAR(fun.numcad),
+      582
+    FROM vetorh.r034fun fun
+    WHERE numemp    =1
+    AND sitafa     <>7
+    AND  NOT exists
+      (SELECT 1 FROM vetorh.R069FIS fis WHERE fis.teccra=3 and fis.numcra=fun.numcra 
+      )
+    AND fun.numcra <>0 and fun.numcad not in (9926)
+  )
+  
+  

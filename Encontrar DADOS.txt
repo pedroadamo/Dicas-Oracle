@@ -1,0 +1,27 @@
+DECLARE
+  CURSOR CUR_CAMPOS
+  IS
+    SELECT a.owner,
+    A.TABLE_NAME,
+      A.COLUMN_NAME
+    FROM ALL_TAB_COLUMNS A
+    WHERE A.DATA_TYPE = 'VARCHAR2'
+    AND A.OWNER      IN ('VETORH'); -- INFORMAR OWNERS
+  V_NUM NUMBER       := 0 ;
+BEGIN
+  FOR X IN CUR_CAMPOS
+  LOOP
+    V_NUM := 0;
+    BEGIN
+      EXECUTE IMMEDIATE ' SELECT  1 FROM '||X.OWNER||'.' || X.TABLE_NAME || ' WHERE UPPER(' || X.COLUMN_NAME || ') LIKE ''%PEDRO%''' INTO V_NUM; -- INFORMAR VALOR A SER PESQUISADO AQUI
+    EXCEPTION
+    WHEN no_data_found THEN
+      NULL;
+    WHEN OTHERS THEN
+      dbms_output.put_line(X.TABLE_NAME);
+    END;
+    IF V_NUM > 0 THEN
+      dbms_output.put_line('TABELA: '|| X.TABLE_NAME|| ' COLUNA: '||X.COLUMN_NAME);
+    END IF;
+  END LOOP;
+END;
